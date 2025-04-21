@@ -5,7 +5,7 @@
 
 // ** Database settings - You can get this info from your web host ** //
 define('DB_NAME', 'wordpress');
-define('DB_USER', 'j_tseng-wp');
+define('DB_USER', 'j_tseng_wp');
 define('DB_PASSWORD', 'spiders_are_friends_4%');
 define('DB_HOST', 'db');
 define('DB_CHARSET', 'utf8');
