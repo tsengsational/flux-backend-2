@@ -1,0 +1,65 @@
+name: WordPress CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Validate docker-compose.yml
+        run: docker-compose config
+
+      - name: Test WordPress container
+        run: |
+          docker-compose up -d
+          docker-compose ps
+          docker-compose logs wordpress
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+      - name: Deploy to Oracle Instance
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@150.136.240.129 '
+            cd /home/ubuntu/flux-2 &&
+            git fetch origin &&
+            git reset --hard origin/main &&
+            docker-compose down &&
+            docker-compose pull &&
+            docker-compose up -d --build &&
+            docker-compose ps &&
+            docker-compose logs wordpress
+          '
+
+      - name: Verify Deployment
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" http://150.136.240.129:8000/wp-json/wp/v2/posts || true
+        continue-on-error: true
+
+      - name: Notify on Failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Deployment Failed',
+              body: 'The deployment to Oracle instance failed. Please check the logs.'
+            }) 
