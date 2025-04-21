@@ -6,19 +6,27 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  issues: write
-
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Validate docker-compose.yml
+        run: docker-compose config
 
-      - name: Check Docker and Docker Compose versions
+      - name: Test WordPress container
         run: |
-          docker --version
-          docker-compose --version
+          docker-compose up -d
+          docker-compose ps
+          docker-compose logs wordpress
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -29,15 +37,9 @@ jobs:
       - name: Deploy to Oracle Instance
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@150.136.240.129 '
-            mkdir -p /home/ubuntu/flux-2 &&
             cd /home/ubuntu/flux-2 &&
-            if [ ! -d ".git" ]; then
-              git clone https://github.com/tsengsational/flux-backend-2.git . &&
-              git checkout main
-            else
-              git fetch origin &&
-              git reset --hard origin/main
-            fi &&
+            git fetch origin &&
+            git reset --hard origin/main &&
             docker-compose down &&
             docker-compose pull &&
             docker-compose up -d --build &&
