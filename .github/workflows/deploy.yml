@@ -54,7 +54,7 @@ jobs:
 
         - name: Use Docker Compose From Setup
           run: |
-          echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
+            echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
 
         - name: Install Docker Compose
           run: |
