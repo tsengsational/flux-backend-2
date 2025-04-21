@@ -25,9 +25,11 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Use Docker Compose From Setup
-        run: echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
       - uses: actions/checkout@v3
+      
+      - name: Use Docker Compose From Setup
+        run: |
+          echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
 
       - name: Install Docker Compose
         run: |
@@ -49,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Use Docker Compose From Setup
         run: echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
 
