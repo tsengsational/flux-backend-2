@@ -15,16 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Docker Compose (if not already installed)
+      - name: Install Docker Compose
         run: |
-          if ! command -v docker-compose &> /dev/null; then
-            echo "Docker Compose not found, installing..."
-            sudo apt-get update
-            sudo apt-get install -y docker-compose
-          else
-            echo "Docker Compose is already installed."
-          fi
-      
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
       - name: Validate docker-compose.yml
         run: docker-compose config
 
@@ -41,15 +37,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Docker Compose (if not already installed)
+      - name: Install Docker Compose
         run: |
-          if ! command -v docker-compose &> /dev/null; then
-            echo "Docker Compose not found, installing..."
-            sudo apt-get update
-            sudo apt-get install -y docker-compose
-          else
-            echo "Docker Compose is already installed."
-          fi
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
