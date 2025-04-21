@@ -10,9 +10,23 @@ permissions:
   issues: write
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+    outputs:
+      docker-compose-path: /usr/local/bin/docker-compose
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Docker Compose From Setup
+        run: echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
       - uses: actions/checkout@v3
 
       - name: Install Docker Compose
@@ -30,12 +44,14 @@ jobs:
           docker-compose ps
           docker-compose logs wordpress
 
-  deploy:
-    needs: test
-    if: github.ref == 'refs/heads/main'
+ deploy:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Use Docker Compose From Setup
+        run: echo "Docker Compose path: ${{ needs.setup.outputs.docker-compose-path }}"
 
       - name: Install Docker Compose
         run: |
