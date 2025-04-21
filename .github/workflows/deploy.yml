@@ -47,6 +47,7 @@ jobs:
       - name: Deploy to Oracle Instance
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@150.136.240.129 '
+            mkdir -p /home/ubuntu/flux-2 &&
             cd /home/ubuntu/flux-2 &&
             git fetch origin &&
             git reset --hard origin/main &&
