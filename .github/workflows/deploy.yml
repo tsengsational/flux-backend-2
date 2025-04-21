@@ -12,8 +12,13 @@ permissions:
 jobs:
   setup:
     runs-on: ubuntu-latest
+
+    outputs:
+      docker-compose-path: ${{ steps.set-compose.outputs.docker-compose-path }}
+
     steps:
       - name: Install Docker Compose
+        id: set-compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
@@ -28,6 +33,7 @@ jobs:
 
       - name: Use Docker Compose From Setup
         run: |
+          echo "Setting path: ${{ needs.setup.outputs.docker-compose-path }}"
           export PATH=$PATH:${{ needs.setup.outputs.docker-compose-path }}
           docker-compose --version
 
