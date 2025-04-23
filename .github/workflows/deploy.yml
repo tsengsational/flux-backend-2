@@ -17,8 +17,8 @@ jobs:
 
       - name: Clean up directories
         run: |
-          rm -rf wordpress/wp-content/themes/*
-          rm -rf wordpress/wp-content/uploads/*
+          sudo rm -rf wordpress/wp-content/themes/*
+          sudorm -rf wordpress/wp-content/uploads/*
 
       - name: Validate docker compose.yml
         run: docker compose config
@@ -41,8 +41,8 @@ jobs:
 
       - name: Clean up directories
         run: |
-          rm -rf wordpress/wp-content/themes/*
-          rm -rf wordpress/wp-content/uploads/*
+          sudo rm -rf wordpress/wp-content/themes/*
+          sudo rm -rf wordpress/wp-content/uploads/*
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
