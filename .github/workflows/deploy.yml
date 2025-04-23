@@ -31,11 +31,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set write permissions
-        run: chmod -R u+w wordpress/wp-content
-      
-      - name: Fix ownership
-        run: sudo chown -R $USER:$USER wordpress/wp-content
+      - name: Ensure directory permissions before cleanup
+        run: |
+          sudo chmod -R u+w wordpress/wp-content
+          sudo chown -R $USER:$USER wordpress/wp-content
 
       - name: Clean up directories
         run: |
@@ -52,10 +51,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@150.136.240.129 '
             cd /home/ubuntu/flux-2 &&
+            sudo chmod -R u+w wordpress/wp-content &&
+            sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
             git fetch origin &&
             git reset --hard origin/main &&
-            sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
-            sudo chmod -R u+w wordpress/wp-content &&
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build &&
@@ -67,6 +66,7 @@ jobs:
         run: |
           curl -s -o /dev/null -w "%{http_code}" http://150.136.240.129:8000/wp-json/wp/v2/posts || true
         continue-on-error: true
+
 
       - name: Notify on Failure
         if: failure() && github.event_name == 'push'
