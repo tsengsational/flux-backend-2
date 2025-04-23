@@ -15,11 +15,6 @@ jobs:
       - name: Set write permissions
         run: chmod -R u+w wordpress/wp-content
 
-      - name: Clean up directories
-        run: |
-          sudo rm -rf wordpress/wp-content/themes/*
-          sudorm -rf wordpress/wp-content/uploads/*
-
       - name: Validate docker compose.yml
         run: docker compose config
 
@@ -38,6 +33,9 @@ jobs:
 
       - name: Set write permissions
         run: chmod -R u+w wordpress/wp-content
+      
+      - name: Fix ownership
+        run: sudo chown -R $USER:$USER wordpress/wp-content
 
       - name: Clean up directories
         run: |
