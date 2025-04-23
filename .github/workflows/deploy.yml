@@ -12,6 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
+      - name: Set write permissions
+        run: chmod -R u+w wordpress/wp-content
+
+      - name: Clean up directories
+        run: |
+          rm -rf wordpress/wp-content/themes/*
+          rm -rf wordpress/wp-content/uploads/*
+
       - name: Validate docker compose.yml
         run: docker compose config
 
@@ -28,6 +36,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set write permissions
+        run: chmod -R u+w wordpress/wp-content
+
+      - name: Clean up directories
+        run: |
+          rm -rf wordpress/wp-content/themes/*
+          rm -rf wordpress/wp-content/uploads/*
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -40,6 +56,8 @@ jobs:
             cd /home/ubuntu/flux-2 &&
             git fetch origin &&
             git reset --hard origin/main &&
+            sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
+            sudo chmod -R u+w wordpress/wp-content &&
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build &&
