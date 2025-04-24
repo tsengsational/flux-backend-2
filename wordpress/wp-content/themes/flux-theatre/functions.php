@@ -441,4 +441,19 @@ add_action('rest_api_init', function() {
         }
         return $value;
     });
-}, 15); 
+}, 15);
+
+// Add CORS headers
+function add_cors_headers() {
+    header('Access-Control-Allow-Origin: https://flux-theatre.netlify.app');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Credentials: true');
+    
+    // Handle preflight requests
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        status_header(200);
+        exit();
+    }
+}
+add_action('init', 'add_cors_headers'); 

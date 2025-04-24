@@ -20,7 +20,8 @@ services:
       - ./wordpress/wp-config.php:/var/www/html/wp-config.php
       - ./wordpress/php/upload.ini:/usr/local/etc/php/conf.d/uploads.ini
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
 
   db:
@@ -32,6 +33,11 @@ services:
       MYSQL_ROOT_PASSWORD: spiders_are_friends_5%
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     restart: always
 
 volumes:
