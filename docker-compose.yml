@@ -10,9 +10,15 @@ services:
       WORDPRESS_DB_USER: j_tseng_wp
       WORDPRESS_DB_PASSWORD: spiders_are_friends_4%
       WORDPRESS_DB_NAME: wordpress
+      PHP_UPLOAD_MAX_FILESIZE: 100M
+      PHP_POST_MAX_SIZE: 100M
+      PHP_MEMORY_LIMIT: 256M
+      PHP_MAX_EXECUTION_TIME: 300
+      PHP_MAX_INPUT_TIME: 300
     volumes:
       - ./wordpress/wp-content:/var/www/html/wp-content
       - ./wordpress/wp-config.php:/var/www/html/wp-config.php
+      - ./wordpress/php/upload.ini:/usr/local/etc/php/conf.d/uploads.ini
     depends_on:
       - db
     restart: always
