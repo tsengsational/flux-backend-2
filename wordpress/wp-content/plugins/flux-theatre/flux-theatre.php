@@ -758,20 +758,56 @@ class Flux_Theatre_CPT {
             )
         ));
 
+        // add_filter('allowed_http_origins', function($origins) {
+        //     $origins[] = 'https://flux-theatre.netlify.app'; // your Netlify frontend
+        //     error_log('HTTP_ORIGIN: ' . $_SERVER['HTTP_ORIGIN'] ?? 'none');
+        //     return $origins;
+        // });
+
         // Add CORS headers
-        add_action('rest_api_init', function() {
+       // 1. Handle REST API responses
+        function custom_send_cors_headers($value) {
+            $origin = get_http_origin();
+            $allowed_origins = [
+                'https://flux-theatre.netlify.app',
+                'http://localhost:3000',
+            ];
+
+            if ($origin && in_array($origin, $allowed_origins)) {
+                header('Access-Control-Allow-Origin: ' . esc_url_raw($origin));
+                header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+                header('Access-Control-Allow-Credentials: true');
+                header('Access-Control-Allow-Headers: Authorization, Content-Type');
+            }
+
+            return $value;
+        }
+
+        function custom_rest_cors_headers() {
             remove_filter('rest_pre_serve_request', 'rest_send_cors_headers');
-            add_filter('rest_pre_serve_request', function($value) {
+            add_filter('rest_pre_serve_request', 'custom_send_cors_headers', 15);
+        }
+        add_action('rest_api_init', 'custom_rest_cors_headers', 15);
+
+        // 2. Handle OPTIONS preflight requests
+        add_action('init', function () {
+            if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
                 $origin = get_http_origin();
-                if ($origin) {
+                $allowed_origins = [
+                    'https://flux-theatre.netlify.app',
+                    'http://localhost:3000',
+                ];
+
+                if ($origin && in_array($origin, $allowed_origins)) {
                     header('Access-Control-Allow-Origin: ' . esc_url_raw($origin));
                     header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                     header('Access-Control-Allow-Credentials: true');
                     header('Access-Control-Allow-Headers: Authorization, Content-Type');
+                    exit(0);
                 }
-                return $value;
-            });
-        }, 15);
+            }
+        });
+
     }
 
     public function get_hero_media() {

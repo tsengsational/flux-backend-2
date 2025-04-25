@@ -427,33 +427,3 @@ add_action('wp_ajax_flux_get_attachment_url', 'flux_get_attachment_url');
 
 // Enable Contact Form 7 REST API
 add_filter('wpcf7_rest_api_enabled', '__return_true');
-
-// Handle CORS for Contact Form 7
-add_action('rest_api_init', function() {
-    remove_filter('rest_pre_serve_request', 'rest_send_cors_headers');
-    add_filter('rest_pre_serve_request', function($value) {
-        $origin = get_http_origin();
-        if ($origin) {
-            header('Access-Control-Allow-Origin: ' . esc_url_raw($origin));
-            header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-            header('Access-Control-Allow-Credentials: true');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
-        }
-        return $value;
-    });
-}, 15);
-
-// Add CORS headers
-function add_cors_headers() {
-    header('Access-Control-Allow-Origin: https://flux-theatre.netlify.app');
-    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization');
-    header('Access-Control-Allow-Credentials: true');
-    
-    // Handle preflight requests
-    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-        status_header(200);
-        exit();
-    }
-}
-add_action('init', 'add_cors_headers'); 
