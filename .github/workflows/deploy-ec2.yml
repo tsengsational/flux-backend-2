@@ -1,4 +1,4 @@
-name: WordPress CI/CD Pipeline
+name: WordPress EC2 Deployment
 
 on:
   push:
@@ -44,15 +44,15 @@ jobs:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.EC2_SSH_KNOWN_HOSTS }}
 
-      - name: Deploy to Oracle Instance
+      - name: Deploy to EC2 Instance
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@150.136.240.129 '
-            cd /home/ubuntu/flux-2 &&
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} '
+            cd /home/ec2-user/flux-theatre-backend &&
             sudo chmod -R u+w wordpress/wp-content &&
-            sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
+            sudo chown -R ec2-user:ec2-user wordpress/wp-content &&
             git fetch origin &&
             git reset --hard origin/main &&
             docker compose down &&
@@ -62,11 +62,15 @@ jobs:
             docker compose logs wordpress
           '
 
-      - name: Verify Deployment
+      - name: Verify HTTP Deployment
         run: |
-          curl -s -o /dev/null -w "%{http_code}" http://150.136.240.129:8000/wp-json/wp/v2/posts || true
+          curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }}:8000/wp-json/wp/v2/posts || true
         continue-on-error: true
 
+      - name: Verify HTTPS Deployment
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.ALB_DNS_NAME }}/wp-json/wp/v2/posts || true
+        continue-on-error: true
 
       - name: Notify on Failure
         if: failure() && github.event_name == 'push'
@@ -77,6 +81,6 @@ jobs:
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Deployment Failed',
-              body: 'The deployment to Oracle instance failed. Please check the logs.'
-            })
+              title: 'EC2 Deployment Failed',
+              body: 'The deployment to EC2 instance failed. Please check the logs.'
+            }) 
