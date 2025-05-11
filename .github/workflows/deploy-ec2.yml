@@ -50,6 +50,8 @@ jobs:
         with:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           # known_hosts: ${{ secrets.EC2_SSH_KNOWN_HOSTS }}
+      - name: Test SSH connection
+        run: ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} 'echo "SSH connected!"'
 
       - name: Deploy to EC2 Instance
         run: |
