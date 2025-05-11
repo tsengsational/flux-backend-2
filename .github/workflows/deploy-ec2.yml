@@ -69,7 +69,7 @@ jobs:
             docker compose up -d --build &&
             docker compose ps &&
             docker compose logs wordpress
-        '
+          '
 
       - name: Verify HTTP Deployment
         run: |
