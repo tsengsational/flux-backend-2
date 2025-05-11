@@ -55,18 +55,21 @@ jobs:
 
       - name: Deploy to EC2 Instance
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} '
-            cd /home/ubuntu/flux-theatre-backend &&
-            sudo chmod -R u+w wordpress/wp-content &&
-            sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
-            git fetch origin &&
-            git reset --hard origin/main &&
-            docker compose down &&
-            docker compose pull &&
-            docker compose up -d --build &&
-            docker compose ps &&
-            docker compose logs wordpress
-          '
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} '
+          if [ ! -d "/home/ubuntu/flux-theatre-backend/.git" ]; then
+            git clone https://github.com/tsengsational/flux-backend-2.git flux-theatre-backend;
+          fi &&
+          cd flux-theatre-backend &&
+          sudo chmod -R u+w wordpress/wp-content &&
+          sudo chown -R ubuntu:ubuntu wordpress/wp-content &&
+          git fetch origin &&
+          git reset --hard origin/main &&
+          docker compose down &&
+          docker compose pull &&
+          docker compose up -d --build &&
+          docker compose ps &&
+          docker compose logs wordpress
+        '
 
       - name: Verify HTTP Deployment
         run: |
