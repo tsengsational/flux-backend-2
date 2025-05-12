@@ -1,0 +1,10 @@
+¡G"h<?php exit; ?>a:2:{s:7:"content";O:8:"stdClass":24:{s:2:"ID";i:11254;s:11:"post_author";s:1:"2";s:9:"post_date";s:19:"2024-08-22 19:20:38";s:13:"post_date_gmt";s:19:"2024-08-22 19:20:38";s:12:"post_content";s:1125:"<div class="xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a">
+<div dir="auto">Flux is SO deeply honored to be among the 2024 MAP Fund Grantees! This support will make possible the next phase of our <em>Portal Project</em>, an ensemble-devised ritual performance in which artists, and then audience, engage in conversations with versions of themselves from an alternate universe where the COVID-19 pandemic never happened.</div>
+<div dir="auto"></div>
+<div dir="auto"><em>Portal Magic Consensus Time</em> is created by and features (actors designated by a ^): Heather Cohn, Sarah Elizabeth Grace^, Fiona Hansen^, Miranda Holliday^, Montserrat Mendez^, Emily Rondon, Corinna Schulenburg^, Jason Tseng, and Justin Woo^.</div>
+<div dir="auto"></div>
+<div dir="auto">SYNOPSIS: In <em>Portal Magic Consensus Time</em>, a group of theatremakers have discovered just such a portal, only theyâ€™re not sure what to do with it. Share it with the world, or only those they trust? Or make sure no one else ever opens it again?</div>
+</div>
+<div class="x11i5rnm xat24cr x1mh8g0r x1vvkbs xtlvy1s x126k92a">
+<div dir="auto"></div>
+</div>";s:10:"post_title";s:55:"Portal Magic Consensus Time named 2024 MAP Fund Grantee";s:12:"post_excerpt";s:0:"";s:11:"post_status";s:7:"publish";s:14:"comment_status";s:4:"open";s:11:"ping_status";s:4:"open";s:13:"post_password";s:0:"";s:9:"post_name";s:55:"portal-magic-consensus-time-named-2024-map-fund-grantee";s:7:"to_ping";s:0:"";s:6:"pinged";s:0:"";s:13:"post_modified";s:19:"2024-08-22 19:20:38";s:17:"post_modified_gmt";s:19:"2024-08-22 19:20:38";s:21:"post_content_filtered";s:0:"";s:11:"post_parent";i:0;s:4:"guid";s:36:"https://www.fluxtheatre.org/?p=11254";s:10:"menu_order";i:0;s:9:"post_type";s:4:"post";s:14:"post_mime_type";s:0:"";s:13:"comment_count";s:1:"0";s:6:"filter";s:3:"raw";}s:15:"key_version_all";i:2;}

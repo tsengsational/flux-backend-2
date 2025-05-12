@@ -1,0 +1,1 @@
+•L"h<?php exit; ?>a:2:{s:7:"content";s:285:"{"common.install":1747075409,"common.install_version":"2.8.8","tasks.generic.last_run_version":"2.8.8","tasks.last_run_version":null,"tasks.admin.last_run_version":"2.8.8","license.status":"no_key","license.next_check":1747507415,"license.terms":"","license.community_terms":"decline"}";s:15:"key_version_all";i:2;}

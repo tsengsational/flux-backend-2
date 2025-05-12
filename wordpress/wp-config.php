@@ -1,4 +1,15 @@
 <?php
+/** Enable W3 Total Cache */
+define('WP_CACHE', true); // Added by W3 Total Cache
+
+// W3 Total Cache Constants
+define('W3TC_DYNAMIC_SECURITY', 'your-secure-key-here'); // Replace with a random string
+define('W3TC_CDN_DOMAIN', ''); // Add your CDN domain if you have one
+define('W3TC_CDN_SSL', 'auto');
+define('W3TC_CDN_DEBUG', false);
+define('W3TC_CDN_VERIFY_SSL', true);
+define('W3TC_CDN_SSL_VERIFY_HOST', true);
+
 /**
  * The base configuration for WordPress
  */
@@ -38,13 +49,13 @@ define('WP_DEBUG', false);
 /* Add any custom values between this line and the "stop editing" line. */
 
 // Force HTTPS
-define('FORCE_SSL_ADMIN', true);
-define('FORCE_SSL_LOGIN', true);
+// define('FORCE_SSL_ADMIN', true);
+// define('FORCE_SSL_LOGIN', true);
 
 // If we're behind a proxy server and using HTTPS, we need to alert WordPress of that fact
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
-    $_SERVER['HTTPS'] = 'on';
-}
+// if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+//     $_SERVER['HTTPS'] = 'on';
+// }
 
 /* That's all, stop editing! Happy publishing. */
 

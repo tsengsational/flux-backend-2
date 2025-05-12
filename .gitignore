@@ -1,2 +1,8 @@
 /wordpress/wp-content/uploads/*
 /wordpress/wp-content/debug.log
+/wordpress/wp-content/cache/*
+/wordpress/wp-content/advanced-cache.php
+/wordpress/wp-content/object-cache.php
+/wordpress/wp-content/plugins/w3-total-cache/
+/wordpress/wp-content/plugins/w3-total-cache/tmp/*
+
